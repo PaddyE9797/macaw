@@ -27,7 +27,7 @@ class BingWebSearch(Retrieval):
 		super().__init__(params)
 		self.results_requested = self.params['results_requested'] if 'results_requested' in self.params else 1
 		self.subscription_key = self.params['bing_key']
-		self.bing_api_url = 'https://api.cognitive.microsoft.com/bing/v7.0/search'
+		self.bing_api_url = "https://api.bing.microsoft.com/v7.0/search"
 		self.header = {"Ocp-Apim-Subscription-Key": self.subscription_key}
 		params['logger'].warning('There is a maximum number of transactions per second for the Bing API.')
 

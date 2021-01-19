@@ -68,18 +68,18 @@ if __name__ == '__main__':
                  'interaction_db_name': 'macaw_test'}
 
     # These are interface parameters. They are interface specific.
-    interface_params = {'interface': 'telegram',  # interface can be 'telegram' or 'stdio' for live mode, and 'fileio'
+    interface_params = {'interface': 'stdio',  # interface can be 'telegram' or 'stdio' for live mode, and 'fileio'
                                                   # for exp mode.
-                        'bot_token': 'YOUR_TELECGRAM_BOT_TOKEN',  # Telegram bot token.
+                        'bot_token': '1438125517:AAGRoR8sGUzeR2zkBBMWM-qb7Dncq6MrsDM',  # Telegram bot token.
                         'asr_model': 'google',  # The API used for speech recognition.
                         'asg_model': 'google',  # The API used for speech generation.
-                        'google-speech-to-text-credential-file': 'YOUR_GOOGLE_CREDENTIAL_FILE'}
+                        'google-speech-to-text-credential-file': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/csa-project-patrick-easton-32959d126499.json'}
 
     # These are parameters used by the retrieval model.
     retrieval_params = {'query_generation': 'simple',  # the model that generates a query from a conversation history.
-                        'use_coref': True,  # True, if query generator can use coreference resolution, otherwise False.
+                        'use_coref': False,  # True, if query generator can use coreference resolution, otherwise False.
                         'search_engine': 'bing',  # the search engine. It can be either 'indri' or 'bing'.
-                        'bing_key': 'YOUR_BING_SUBSCRIPTION_KEY',  # Bing API key
+                        'bing_key': '40e200c689cf44e4a5e117f697b5934a',  # Bing API key
                         'search_engine_path': 'PATH_TO_INDRI',  # The path to the indri toolkit.
                         'col_index': 'PATH_TO_INDRI_INDEX',  # The path to the indri index.
                         'col_text_format': 'trectext',  # collection text format. Standard 'trectext' is only supported.
@@ -92,9 +92,9 @@ if __name__ == '__main__':
 
     # These are parameters used by the machine reading comprehension model.
     mrc_params = {'mrc': 'drqa',  # MRC model.
-                  'mrc_model_path': 'PATH_TO_PRETRAINED_MRC_MODEL',  # The path to the model parameters.
-                  'mrc_path': 'PATH_TO_MRC_DIRECTORY',  # The path to the model toolkit.
-                  'corenlp_path': 'PATH_TO_STANFORD_CORE_NLP_DIRECTORY',  # The path to the corenlp toolkit.
+                  'mrc_model_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/DrQA/data/reader/multitask.mdl',  # The path to the model parameters.
+                  'mrc_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/DrQA',  # The path to the model toolkit.
+                  'corenlp_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/stanford-corenlp-full-2017-06-09',  # The path to the corenlp toolkit.
                   'qa_results_requested': 3}  # The number of candidate answers returned by the MRC model.
 
     params = {**basic_params, **db_params, **interface_params, **retrieval_params, **mrc_params}

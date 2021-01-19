@@ -78,10 +78,10 @@ if __name__ == '__main__':
     # These are parameters used by the retrieval model.
     retrieval_params = {'query_generation': 'simple',  # the model that generates a query from a conversation history.
                         'use_coref': False,  # True, if query generator can use coreference resolution, otherwise False.
-                        'search_engine': 'bing',  # the search engine. It can be either 'indri' or 'bing'.
+                        'search_engine': 'whoosh',  # the search engine. It can be either 'indri' or 'bing'.
                         'bing_key': '40e200c689cf44e4a5e117f697b5934a',  # Bing API key
                         'search_engine_path': 'PATH_TO_INDRI',  # The path to the indri toolkit.
-                        'col_index': 'PATH_TO_INDRI_INDEX',  # The path to the indri index.
+                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/whoosh/indexdir',  # The path to the indri index.
                         'col_text_format': 'trectext',  # collection text format. Standard 'trectext' is only supported.
                         'results_requested': 3}  # Maximum number of docs that should be retrieved by search engine.
     # Note: If you want to have a re-ranking model (e.g., learning to rank), you just need to simply extend the class

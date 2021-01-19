@@ -5,6 +5,8 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 import macaw.core.retrieval.bing_api
 import macaw.core.retrieval.indri
+import macaw.core.retrieval.whoosh
+
 from macaw.core.retrieval import search_engine, query_generation
 
 
@@ -40,5 +42,10 @@ def get_retrieval_model(params):
                                             'bing_key': params['bing_key'],
                                             'results_requested': params['results_requested'],
                                             'logger': params['logger']})
+    elif params['search_engine'] == 'whoosh':
+        return macaw.core.retrieval.whoosh.Whoosh({'query_generation': q_generation,
+                                    'index': params['col_index'],
+                                    'results_requested': params['results_requested'],
+                                    'logger': params['logger']})
     else:
         raise Exception('The requested retrieval model does not exist!')

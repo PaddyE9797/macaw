@@ -49,6 +49,9 @@ class NaiveOutputProcessing(OutputProcessing):
         if 'retrieval' in candidate_outputs:
             if len(candidate_outputs['retrieval']) > 0:
                 return 'retrieval'
+        if 'summary' in candidate_outputs:
+            if len(candidate_outputs['summary']) > 0:
+                return 'summary'
         return None
 
     def get_output(self, conv, candidate_outputs):
@@ -87,6 +90,10 @@ class NaiveOutputProcessing(OutputProcessing):
             msg_info['msg_creator'] = 'retrieval'
             text = 'Retrieved document list (click to see the document content):'
             msg_info['options'] = [(output.title, '#get_doc ' + output.id, output.score) for output in candidate_outputs['retrieval']]
+        elif selected_action == 'summary':
+            msg_info['msg_type'] = 'text'
+            msg_info['msg_creator'] = 'summary'
+            text = candidate_outputs['summary'][0].text
         elif selected_action == '#get_doc':
             msg_info['msg_type'] = 'text'
             msg_info['msg_creator'] = '#get_doc'

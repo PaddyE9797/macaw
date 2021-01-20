@@ -28,7 +28,7 @@ class ConvQA(CIS):
         self.logger.info('Conversational QA Model... starting up...')
         self.retrieval = retrieval.get_retrieval_model(params=self.params)
         self.qa = mrc.get_mrc_model(params=self.params)
-        self.params['actions'] = {'retrieval': self.retrieval, 'qa': self.qa}
+        self.params['actions'] = {'summary': self.retrieval, 'qa': self.qa}
         self.request_dispatcher = RequestDispatcher(self.params)
         self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 

@@ -46,6 +46,8 @@ class PreActionRequestDispatcher:
                 return 'qa'
         if 'retrieval' in self.params:
             return 'retrieval'
+        if 'summary' in self.params:
+            return 'summary'
 
     def dispatch(self, conv_list):
         """
@@ -60,6 +62,8 @@ class PreActionRequestDispatcher:
 
         """
         action = self.action_detection(conv_list)
+        if action == 'summary':
+            return {'summary': actions.SummaryAction.run(conv_list, self.params)}
         if action == 'retrieval':
             return {'retrieval': actions.RetrievalAction.run(conv_list, self.params)}
         if action == 'qa':

@@ -8,14 +8,17 @@ from macaw.cis import CIS
 from macaw.core import mrc, retrieval
 from macaw.core.input_handler.action_detection import RequestDispatcher
 from macaw.core.output_handler import naive_output_selection
-
+from macaw.util.logging import Logger
 
 class ConvSearch(CIS):
     def __init__(self, params):
         super().__init__(params)
+        self.logger = params['logger']
+        self.logger.info('Conversational QA Model... starting up...')
         self.retrieval = retrieval.get_retrieval_model(params=self.params)
         self.qa = mrc.get_mrc_model(params=self.params)
-        self.request_dispatcher = RequestDispatcher({'retrieval': self.retrieval, 'qa': self.qa})
+        self.params['actions'] = {'retrieval': self.retrieval, 'qa': self.qa}
+        self.request_dispatcher = RequestDispatcher(self.params)
         self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
     def request_handler_func(self, conv_list):
@@ -30,25 +33,27 @@ class ConvSearch(CIS):
 
 
 if __name__ == '__main__':
-    basic_params = {'timeout': -1,  # timeout is in terms of second.
-                    'mode': 'exp'}  # mode can be either live or exp.
+    basic_params = {'timeout': 120,  # timeout is in terms of second.
+                    'mode': 'exp',  # mode can be either live or exp.
+                    'logger': Logger({})} 
     interface_params = {'interface': 'fileio',
-                        'input_file_path': 'INPUT_FILE',
-                        'output_file_path': 'OUTPUT_FILE',
+                        'input_file_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/whoosh/eval/input_test_1.txt',
+                        'output_file_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/whoosh/eval/output_test_1.txt',
                         'output_format': 'text'}
     retrieval_params = {'query_generation': 'simple',
-                        'search_engine': 'bing',  # 'bing' or 'indri'
+                        'search_engine': 'whoosh',  # 'bing' or 'indri'
                         'use_coref': True,  # True, if query generator can use coreference resolution, otherwise False.
                         'bing_key': 'YOUR_BING_SUBSCRIPTION_TOKEN',  # only for Bing Web Search
                         'search_engine_path': 'PATH_TO_INDRI',  # only for Indri
-                        'col_index': 'PATH_TO_INDRI_INDEX',  # only for Indri
+                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/whoosh/indexdir',  # only for Indri
                         'col_text_format': 'trectext',  # trectext or trecweb. Only for Indri.
                         'results_requested': 3}
     mrc_params = {'mrc': 'drqa',
-                  'mrc_model_path': 'PATH_TO_PRETRAINED_MRC_MODEL',
-                  'mrc_path': 'PATH_TO_MRC_DIRECTORY',
-                  'corenlp_path': 'PATH_TO_STANFORD_CORE_NLP_DIRECTORY',
+                  'mrc_model_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/DrQA/data/reader/multitask.mdl',
+                  'mrc_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/DrQA',
+                  'corenlp_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/stanford-corenlp-full-2017-06-09',
                   'qa_results_requested': 3}
 
     params = {**basic_params, **interface_params, **retrieval_params, **mrc_params}
+    basic_params['logger'].info(params)
     ConvSearch(params).run()

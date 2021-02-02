@@ -10,7 +10,6 @@ from whoosh.qparser import OrGroup
 
 from macaw.core.retrieval.doc import Document
 from macaw.core.retrieval.search_engine import Retrieval
-from gensim.summarization.summarizer import summarize
 
 import re
 import heapq
@@ -32,16 +31,6 @@ class Whoosh(Retrieval):
             results = s.search(q, limit=self.results_requested)
             for r in results:
                 summary = self.summarise(r["content"])
-                docs.append(Document(r["title"], r["url"], summary, r.score))
-        return docs
-
-    def retrieve_gensim(self, query):
-        docs = []
-        with self.index.searcher() as s:
-            q = QueryParser("content", schema=self.index.schema, group=OrGroup).parse(query)
-            results = s.search(q, limit=self.results_requested)
-            for r in results:
-                summary = self.summarise_gensim(r["content"])
                 docs.append(Document(r["title"], r["url"], summary, r.score))
         return docs
 
@@ -81,9 +70,6 @@ class Whoosh(Retrieval):
         summary_sentences = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
         summary = ' '.join(summary_sentences)
         return summary
-
-    def summarise_gensim(self, doc_text):
-        return summarize(doc_text)
 
     def get_doc_from_index(self, doc_id):
         doc = []

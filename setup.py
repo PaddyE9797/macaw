@@ -5,7 +5,7 @@ setup(
     version='0.1',
     packages=['macaw', 'macaw.core', 'macaw.core.mrc', 'macaw.core.retrieval', 'macaw.core.input_handler',
               'macaw.core.output_handler', 'macaw.core.interaction_handler', 'macaw.util', 'macaw.interface',
-              'macaw.core.summariser'],
+              'macaw.core.summariser', 'macaw.core.clarifying_questions'],
     url='https://github.com/microsoft/macaw/',
     license='MIT',
     author='Hamed Zamani',

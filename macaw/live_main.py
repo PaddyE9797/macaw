@@ -5,7 +5,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from macaw.cis import CIS
-from macaw.core import mrc, retrieval
+from macaw.core import mrc, retrieval, summariser
 from macaw.core.input_handler.action_detection import RequestDispatcher
 from macaw.core.output_handler import naive_output_selection
 from macaw.util.logging import Logger
@@ -27,8 +27,9 @@ class ConvQA(CIS):
         self.logger = params['logger']
         self.logger.info('Conversational QA Model... starting up...')
         self.retrieval = retrieval.get_retrieval_model(params=self.params)
+        self.summariser = summariser.get_summariser(params=self.params)
         self.qa = mrc.get_mrc_model(params=self.params)
-        self.params['actions'] = {'summary': self.retrieval, 'qa': self.qa}
+        self.params['actions'] = {'retrieval': self.retrieval, 'qa': self.qa, 'summary': self.summariser}
         self.request_dispatcher = RequestDispatcher(self.params)
         self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
@@ -97,7 +98,9 @@ if __name__ == '__main__':
                   'corenlp_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/stanford-corenlp-full-2017-06-09',  # The path to the corenlp toolkit.
                   'qa_results_requested': 3}  # The number of candidate answers returned by the MRC model.
 
-    params = {**basic_params, **db_params, **interface_params, **retrieval_params, **mrc_params}
+    summariser_params = {'summariser': 'nltk'}
+
+    params = {**basic_params, **db_params, **interface_params, **retrieval_params, **mrc_params, **summariser_params}
     basic_params['logger'].info(params)
     ConvQA(params).run()
 

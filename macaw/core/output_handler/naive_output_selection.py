@@ -46,13 +46,13 @@ class NaiveOutputProcessing(OutputProcessing):
                         or conv_list[0].text.lower().startswith('where') \
                         or conv_list[0].text.lower().startswith('how'):
                     return 'qa'
-        if 'retrieval' in candidate_outputs:
-            if len(candidate_outputs['retrieval']) > 0:
-                return 'retrieval'
         if 'summary' in candidate_outputs:
             if len(candidate_outputs['summary']) > 0:
                 if len(candidate_outputs['summary'][0].text) <= 1000:
                     return 'summary'
+        if 'retrieval' in candidate_outputs:
+            if len(candidate_outputs['retrieval']) > 0:
+                return 'retrieval'
         return None
 
     def get_output(self, conv, candidate_outputs):
@@ -86,15 +86,15 @@ class NaiveOutputProcessing(OutputProcessing):
             msg_info['msg_type'] = conv[0].msg_info['msg_type']
             msg_info['msg_creator'] = 'qa'
             text = candidate_outputs['qa'][0].text
+        elif selected_action == 'summary':
+            msg_info['msg_type'] = 'text'
+            msg_info['msg_creator'] = 'summary'
+            text = candidate_outputs['summary'][0].text
         elif selected_action == 'retrieval':
             msg_info['msg_type'] = 'options'
             msg_info['msg_creator'] = 'retrieval'
             text = 'Retrieved document list (click to see the document content):'
             msg_info['options'] = [(output.title, '#get_doc ' + output.id, output.score) for output in candidate_outputs['retrieval']]
-        elif selected_action == 'summary':
-            msg_info['msg_type'] = 'text'
-            msg_info['msg_creator'] = 'summary'
-            text = candidate_outputs['summary'][0].text
         elif selected_action == '#get_doc':
             msg_info['msg_type'] = 'text'
             msg_info['msg_creator'] = '#get_doc'

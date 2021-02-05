@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Summarise(ABC):
+class Summariser(ABC):
     @abstractmethod
     def __init__(self, params):
         self.params = params

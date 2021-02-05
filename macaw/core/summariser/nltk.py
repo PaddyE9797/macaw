@@ -1,4 +1,4 @@
-from macaw.core.summariser import summariser
+from macaw.core.summariser.summariser import Summariser
 from macaw.core.retrieval.doc import Document
 
 import re
@@ -8,7 +8,7 @@ nltk.download('punkt')
 nltk.download('stopwords')
 
 
-class NLTK(summariser):
+class NLTK(Summariser):
     def __init__(self, params):
         super().__init__(params)
 

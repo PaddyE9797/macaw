@@ -27,18 +27,13 @@ class Action(ABC):
 class SummaryAction(Action):
     @staticmethod
     def run(conv_list, params):
-        """
-        The retrieval action runs the retrieval model and returns a list of documents.
-        Args:
-            conv_list(list): List of util.msg.Message, each corresponding to a conversational message from / to the
-            user. This list is in reverse order, meaning that the first elements is the last interaction made by user.
-            params(dict): A dict containing some parameters. The parameter 'retrieval' is required, which should be the
-            retrieval model object.
-
-        Returns:
-            A list of Documents.
-        """
-        return params['actions']['summary'].get_results(conv_list)
+        doc_list = RetrievalAction.run(conv_list, params)
+        doc = ''
+        for i in range(len(doc_list)):
+            doc = doc_list[i].text
+            if len(doc.strip()) > 0:
+                break
+        return params['actions']['summary'].summarise(doc)
 
 
 class RetrievalAction(Action):

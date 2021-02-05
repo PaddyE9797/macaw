@@ -51,7 +51,8 @@ class NaiveOutputProcessing(OutputProcessing):
                 return 'retrieval'
         if 'summary' in candidate_outputs:
             if len(candidate_outputs['summary']) > 0:
-                return 'summary'
+                if len(candidate_outputs['summary'][0].text) <= 1000:
+                    return 'summary'
         return None
 
     def get_output(self, conv, candidate_outputs):

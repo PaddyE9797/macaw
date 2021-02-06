@@ -7,6 +7,8 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 from macaw import util
 from macaw.core.output_handler.output_selection import OutputProcessing
 from macaw.core.interaction_handler.msg import Message
+from macaw.core.clarifying_questions.question import Question
+from macaw.core.retrieval.doc import Document
 
 
 class NaiveOutputProcessing(OutputProcessing):
@@ -37,22 +39,30 @@ class NaiveOutputProcessing(OutputProcessing):
         """
         if '#get_doc' in candidate_outputs:
             return '#get_doc'
+        if 'clarify' in candidate_outputs:
+            if len(candidate_outputs['clarify']) > 0:
+                if isinstance(candidate_outputs['clarify'][0], Question):
+                    if int(candidate_outputs['clarify'][0].clarification_needed) >= 2:
+                        return 'clarify'
         if 'qa' in candidate_outputs:
-            if len(candidate_outputs['qa'][0].text) > 0:
-                if conv_list[0].text.endswith('?') \
-                        or conv_list[0].text.lower().startswith('what') \
-                        or conv_list[0].text.lower().startswith('who') \
-                        or conv_list[0].text.lower().startswith('when') \
-                        or conv_list[0].text.lower().startswith('where') \
-                        or conv_list[0].text.lower().startswith('how'):
-                    return 'qa'
+            if isinstance(candidate_outputs['qa'][0], Document):
+                if len(candidate_outputs['qa'][0].text) > 0:
+                    if conv_list[0].text.endswith('?') \
+                            or conv_list[0].text.lower().startswith('what') \
+                            or conv_list[0].text.lower().startswith('who') \
+                            or conv_list[0].text.lower().startswith('when') \
+                            or conv_list[0].text.lower().startswith('where') \
+                            or conv_list[0].text.lower().startswith('how'):
+                        return 'qa'
         if 'summary' in candidate_outputs:
             if len(candidate_outputs['summary']) > 0:
-                if len(candidate_outputs['summary'][0].text) <= 1000:
-                    return 'summary'
+                if isinstance(candidate_outputs['summary'][0], Document):
+                    if len(candidate_outputs['summary'][0].text) <= 1000:
+                        return 'summary'
         if 'retrieval' in candidate_outputs:
             if len(candidate_outputs['retrieval']) > 0:
-                return 'retrieval'
+                if isinstance(candidate_outputs['retrieval'], Document):
+                    return 'retrieval'
         return None
 
     def get_output(self, conv, candidate_outputs):
@@ -82,6 +92,10 @@ class NaiveOutputProcessing(OutputProcessing):
             msg_info['msg_type'] = 'text'
             msg_info['msg_creator'] = 'no answer error'
             text = 'No response has been found! Please try again!'
+        elif selected_action == 'clarify':
+            msg_info['msg_type'] = conv[0].msg_info['msg_type']
+            msg_info['msg_creator'] = 'clarify'
+            text = candidate_outputs['clarify'][0].question_text
         elif selected_action == 'qa':
             msg_info['msg_type'] = conv[0].msg_info['msg_type']
             msg_info['msg_creator'] = 'qa'

@@ -37,6 +37,8 @@ class PreActionRequestDispatcher:
             command = conv_list[0].text.split(' ')[0]
             return command
 
+        if 'clarify' in self.params:
+            return 'clarify'
         if 'qa' in self.params:
             if conv_list[0].text.lower().startswith('what') \
                     or conv_list[0].text.lower().startswith('who') \
@@ -62,6 +64,8 @@ class PreActionRequestDispatcher:
 
         """
         action = self.action_detection(conv_list)
+        if action == 'clarify':
+            return {'clarify': actions.ClarifyAction.run(conv_list, self.params)}
         if action == 'summary':
             return {'summary': actions.SummaryAction.run(conv_list, self.params)}
         if action == 'retrieval':

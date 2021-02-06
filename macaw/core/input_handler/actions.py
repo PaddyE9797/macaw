@@ -24,6 +24,12 @@ class Action(ABC):
         pass
 
 
+class ClarifyAction(Action):
+    @staticmethod
+    def run(conv_list, params):
+        return params['actions']['clarify'].get_results(conv_list)
+
+
 class SummaryAction(Action):
     @staticmethod
     def run(conv_list, params):
@@ -105,7 +111,9 @@ def run_action(action, conv_list, params, return_dict):
         return_dict(dict): A shared dict for all processes running this action. The actions' outputs should be added to
         this dict.
     """
-    if action == 'summary':
+    if action == 'clarify':
+        action_func = ClarifyAction.run
+    elif action == 'summary':
         action_func = SummaryAction.run
     elif action == 'retrieval':
         action_func = RetrievalAction.run

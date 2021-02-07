@@ -1,19 +1,13 @@
 from whoosh.index import open_dir
 from whoosh.qparser import QueryParser
 from macaw.core.clarifying_questions.question import Question
+from macaw.core.clarifying_questions.clarification import Clarification
 
 
-class Clariq:
+class Clariq(Clarification):
     def __init__(self, params):
-        self.params = params
+        super().__init__(params)
         self.index = open_dir(self.params['index'])
-        self.query_generation = params['query_generation']
-
-    def get_results(self, conv_list):
-        query = self.query_generation.get_query(conv_list)
-        self.params['logger'].info('New query: ' + query)
-        result_list = self.get_question(query)
-        return result_list
 
     def get_question(self, query):
         questions = []

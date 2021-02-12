@@ -1,5 +1,5 @@
 import unittest
-from macaw.core import retrieval
+from macaw.core import retrieval, summariser
 from macaw.util.logging import Logger
 
 
@@ -10,107 +10,23 @@ class SummarisationTestCases(unittest.TestCase):
                         'results_requested': 3,
                         'logger': Logger({})}
 
-    retrieval_params['logger'].info(retrieval_params)
+    nltk_summariser_params = {'summariser': 'nltk',
+                              'logger': Logger({})}
+
+    gensim_summariser_params = {'summariser': 'gensim',
+                                'logger': Logger({})}
 
     def test_summary_manhattan_project_1(self):
         whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("The Manhattan Project?")
-        self.assertLessEqual(len(doc[0].text), 1000)
+        nltk = summariser.get_summariser(params=self.nltk_summariser_params)
+        gensim = summariser.get_summariser(params=self.gensim_summariser_params)
 
-    def test_retrieval_manhattan_project_2(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Lets talk about the Manhattan Project?")
-        self.assertLessEqual(len(doc[0].text), 1000)
+        doc = whoosh.retrieve("The Manhattan Project?")[0].text
+        nltk_summary = nltk.summarise(doc)[0].text
+        gensim_summary = gensim.summarise(doc)[0].text
 
-    def test_retrieval_manhattan_project_3(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Tell me about the Manhattan Project?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_manhattan_project_4(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("What is the Manhattan Project?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_manhattan_project_5(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("What do you know about the Manhattan Project?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_restorative_justice_1(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Restorative Justice?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_restorative_justice_2(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Lets talk about Restorative Justice?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_restorative_justice_3(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Tell me about Restorative Justice?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_restorative_justice_4(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("What is Restorative Justice?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_restorative_justice_5(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("What do you know about Restorative Justice?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_immigration_1(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Chinese Immigration?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_immigration_2(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Lets talk about Chinese Immigration?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_immigration_3(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Tell me about Chinese Immigration?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_immigration_4(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("How big is Chinese Immigration to America?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_immigration_5(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("What do you know about Chinese Immigration?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_medical_tourism_1(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Medical Tourism in Costa Rica?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_medical_tourism_2(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Lets talk about Medical Tourism in Costa Rica?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_medical_tourism_3(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("Tell me about Medical Tourism in Costa Rica?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_medical_tourism_4(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("How prevalent is medical tourism in Costa Rica?")
-        self.assertLessEqual(len(doc[0].text), 1000)
-
-    def test_retrieval_medical_tourism_5(self):
-        whoosh = retrieval.get_retrieval_model(params=self.retrieval_params)
-        doc = whoosh.retrieve("What do you know about Medical Tourism in Costa Rica?")
-        self.assertLessEqual(len(doc[0].text), 1000)
+        self.assertLessEqual(len(nltk_summary), 1000)
+        self.assertLessEqual(len(nltk_summary), len(gensim_summary))
 
 
 if __name__ == '__main__':

@@ -1,2 +1,2 @@
-123	lung cancer symptoms    treatments
-267	information retrieval   IR tutorials
+1	the manhattan project
+2	restorative justice

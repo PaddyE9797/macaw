@@ -47,8 +47,7 @@ class NaiveOutputProcessing(OutputProcessing):
         if 'qa' in candidate_outputs:
             if isinstance(candidate_outputs['qa'][0], Document):
                 if len(candidate_outputs['qa'][0].text) > 0:
-                    if conv_list[0].text.endswith('?') \
-                            or conv_list[0].text.lower().startswith('what') \
+                    if conv_list[0].text.lower().startswith('what') \
                             or conv_list[0].text.lower().startswith('who') \
                             or conv_list[0].text.lower().startswith('when') \
                             or conv_list[0].text.lower().startswith('where') \

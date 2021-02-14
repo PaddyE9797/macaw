@@ -100,7 +100,7 @@ if __name__ == '__main__':
                   'corenlp_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/stanford-corenlp-full-2017-06-09',  # The path to the corenlp toolkit.
                   'qa_results_requested': 3}  # The number of candidate answers returned by the MRC model.
 
-    summariser_params = {'summariser': 'nltk'}
+    summariser_params = {'summariser': 'gensim'}
 
     clarification_params = {'clarification_type': 'clariq',
                             'clariq_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/clarifying_questions/clariq'}

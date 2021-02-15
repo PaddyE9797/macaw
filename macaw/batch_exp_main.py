@@ -4,7 +4,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from macaw.cis import CIS
-from macaw.core import mrc, retrieval, summariser, clarifying_questions
+from macaw.core import mrc, retrieval
 from macaw.core.input_handler.action_detection import RequestDispatcher
 from macaw.core.output_handler import naive_output_selection
 from macaw.util.logging import Logger
@@ -17,10 +17,7 @@ class ConvSearch(CIS):
         self.logger.info('Conversational QA Model... starting up...')
         self.retrieval = retrieval.get_retrieval_model(params=self.params)
         self.qa = mrc.get_mrc_model(params=self.params)
-        self.summariser = summariser.get_summariser(params=self.params)
-        self.clarification = clarifying_questions.get_clarifying_questions(params=self.params)
-        self.params['actions'] = {'retrieval': self.retrieval, 'qa': self.qa, 'summary': self.summariser,
-                                  'clarify': self.clarification}
+        self.params['actions'] = {'retrieval': self.retrieval}
         self.request_dispatcher = RequestDispatcher(self.params)
         self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
@@ -60,12 +57,6 @@ if __name__ == '__main__':
                   'corenlp_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/stanford-corenlp-full-2017-06-09',
                   'qa_results_requested': 3}
 
-    summariser_params = {'summariser': 'gensim'}
-
-    clarification_params = {'clarification_type': 'clariq',
-                            'clariq_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/clarifying_questions/clariq'}
-
-    params = {**basic_params, **interface_params, **retrieval_params, **mrc_params, **summariser_params,
-              **clarification_params}
+    params = {**basic_params, **interface_params, **retrieval_params, **mrc_params}
     basic_params['logger'].info(params)
     ConvSearch(params).run()

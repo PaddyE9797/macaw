@@ -48,7 +48,7 @@ class FileioInterface(Interface):
         if self.params['output_format'] == 'trec':
             if output_msg.msg_info['msg_type'] == 'options':
                 for (i, (option_name, option_id, output_score)) in enumerate(output_msg.msg_info['options']):
-                    output_file.write(qid + '\tQ0\t' + option_name + '\t' + str(i+1) + '\t' + str(output_score) + '\tmacaw\n')
+                    output_file.write(qid + '\tQ0\t' + str(i+1) + '\t' + str(option_id) + '\t' + str(output_score) + '\tmacaw\n')
             else:
                 raise Exception('TREC output format is only recognized for retrieval results. '
                                 'Therefore, the message type should be options.')

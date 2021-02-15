@@ -47,7 +47,8 @@ class NaiveOutputProcessing(OutputProcessing):
         if 'qa' in candidate_outputs:
             if isinstance(candidate_outputs['qa'][0], Document):
                 if len(candidate_outputs['qa'][0].text) > 0:
-                    if conv_list[0].text.lower().startswith('what') \
+                    if conv_list[0].text.lower().endswith('?') \
+                            or conv_list[0].text.lower().startswith('what') \
                             or conv_list[0].text.lower().startswith('who') \
                             or conv_list[0].text.lower().startswith('when') \
                             or conv_list[0].text.lower().startswith('where') \
@@ -60,7 +61,7 @@ class NaiveOutputProcessing(OutputProcessing):
                         return 'summary'
         if 'retrieval' in candidate_outputs:
             if len(candidate_outputs['retrieval']) > 0:
-                if isinstance(candidate_outputs['retrieval'], Document):
+                if isinstance(candidate_outputs['retrieval'][0], Document):
                     return 'retrieval'
         return None
 

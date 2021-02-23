@@ -38,8 +38,8 @@ if __name__ == '__main__':
                     'logger': Logger({})}  # mode can be either live or exp.
 
     interface_params = {'interface': 'fileio',
-                        'input_file_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/data/example_retrieval_input.txt',
-                        'output_file_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/data/example_retrieval_output.txt',
+                        'input_file_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/data/example_retrieval_input_2.txt',
+                        'output_file_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/data/example_retrieval_output_2.txt',
                         'output_format': 'trec'}
 
     retrieval_params = {'query_generation': 'simple',
@@ -47,7 +47,7 @@ if __name__ == '__main__':
                         'use_coref': False,  # True, if query generator can use coreference resolution, otherwise False.
                         'bing_key': '40e200c689cf44e4a5e117f697b5934a',  # only for Bing Web Search
                         'search_engine_path': 'PATH_TO_INDRI',  # only for Indri
-                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/whoosh/indexdir',   # only for Indri
+                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/macaw/indexes/indexdir',   # only for Indri
                         'col_text_format': 'trectext',  # trectext or trecweb. Only for Indri.
                         'results_requested': 3}
 

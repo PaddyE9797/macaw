@@ -30,8 +30,8 @@ class ConvQA(CIS):
         self.summariser = summariser.get_summariser(params=self.params)
         self.clarification = clarifying_questions.get_clarifying_questions(params=self.params)
         self.qa = mrc.get_mrc_model(params=self.params)
-        self.params['actions'] = {'retrieval': self.retrieval, 'qa': self.qa, 'summary': self.summariser,
-                                  'clarify': self.clarification}
+        self.params['actions'] = {'retrieval': self.retrieval, 'qa': self.qa,
+                                  'summary': self.summariser}
         self.request_dispatcher = RequestDispatcher(self.params)
         self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
                         'search_engine': 'whoosh',  # the search engine. It can be either 'indri' or 'bing'.
                         'bing_key': '40e200c689cf44e4a5e117f697b5934a',  # Bing API key
                         'search_engine_path': 'PATH_TO_INDRI',  # The path to the indri toolkit.
-                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/macaw/indexes/indexdir',  # The path to the indri index.
+                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/whoosh/scripts/passages_index/indexdir',  # The path to the indri index.
                         'col_text_format': 'trectext',  # collection text format. Standard 'trectext' is only supported.
                         'results_requested': 3}  # Maximum number of docs that should be retrieved by search engine.
     # Note: If you want to have a re-ranking model (e.g., learning to rank), you just need to simply extend the class
@@ -100,7 +100,7 @@ if __name__ == '__main__':
                   'corenlp_path': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/stanford-corenlp-full-2017-06-09',  # The path to the corenlp toolkit.
                   'qa_results_requested': 3}  # The number of candidate answers returned by the MRC model.
 
-    summariser_params = {'summariser': 'gensim'}
+    summariser_params = {'summariser': 'nltk'}
 
     clarification_params = {'clarification_type': 'clariq',
                             'clariq_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/macaw/indexes/clariq'}

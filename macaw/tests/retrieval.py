@@ -6,7 +6,7 @@ from macaw.util.logging import Logger
 class RetrievalTestCases(unittest.TestCase):
     retrieval_params = {'search_engine': 'whoosh',
                         'query_generation': 'simple',
-                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/whoosh/indexdir',
+                        'col_index': '/home/patrick-easton/Documents/CSA_Project_Patrick_Easton_Macaw/macaw/macaw/indexes/indexdir',
                         'results_requested': 3,
                         'logger': Logger({})}
 

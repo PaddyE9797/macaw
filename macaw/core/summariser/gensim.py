@@ -8,5 +8,10 @@ class Gensim(Summariser):
         super().__init__(params)
 
     def summarise(self, doc):
-        summary = summarize(doc, ratio=0.2)
-        return [Document(None, None, summary, 0)]
+        if self.number_of_sentences(doc) > 5:
+            summary = summarize(doc, ratio=0.2)
+            return [Document(None, None, summary, 0)]
+        return [Document(None, None, doc, 0)]
+
+    def number_of_sentences(self, paragraph):
+        return len(paragraph.split('.'))

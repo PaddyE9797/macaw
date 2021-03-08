@@ -9,3 +9,7 @@ class Summariser(ABC):
     @abstractmethod
     def summarise(self, doc):
         pass
+
+    @abstractmethod
+    def number_of_sentences(self, paragraph):
+        pass

@@ -24,7 +24,7 @@ class Whoosh(Retrieval):
             q = QueryParser("content", schema=self.index.schema, group=OrGroup).parse(query)
             results = s.search(q, limit=self.results_requested)
             for r in results:
-                docs.append(Document(r["title"], r["url"], r["content"], r.score))
+                docs.append(Document(r["title"], r["title"], r["content"], r.score))
         return docs
 
     def get_doc_from_index(self, doc_id):
@@ -32,5 +32,5 @@ class Whoosh(Retrieval):
         with self.index.searcher() as s:
             q = QueryParser("title", schema=self.index.schema).parse(doc_id)
             r = s.search(q, limit=1)
-            doc.append(Document(r["title"], r["url"], r["content"], r.score))
+            doc.append(Document(r["title"], r["title"], r["content"], r.score))
         return doc

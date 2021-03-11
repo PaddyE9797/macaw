@@ -6,6 +6,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 
 from abc import ABC, abstractmethod
 import string
+import re
 
 
 class QueryGeneration(ABC):
@@ -59,10 +60,15 @@ class SimpleQueryGeneration(QueryGeneration):
         """
         # q = ' '.join(msg.text for msg in conv_list)
         q = conv_list[0].text
+
         if 'use_coref' in self.params and self.params['use_coref']:
             q_coref = self.get_query_coref(conv_list)
             for key in q_coref:
                 q += ' ' + ' '.join(q_coref[key])
+
+        if re.sub(r'[^\w\s]', '', q).lower() == 'yes' or re.sub(r'[^\w\s]', '', q).lower() == 'no':
+            if conv_list[1].msg_info['msg_creator'] == 'clarify':
+                q = conv_list[0].text + " " + conv_list[1].text
 
         q = q.translate(str.maketrans(string.punctuation, ' '*len(string.punctuation))).strip()
 

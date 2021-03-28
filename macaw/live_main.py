@@ -60,7 +60,7 @@ class ConvQA(CIS):
 
 
 if __name__ == '__main__':
-    basic_params = {'timeout': 15,  # timeout is in terms of second.
+    basic_params = {'timeout': 45,  # timeout is in terms of second.
                     'mode': 'live',  # mode can be either live or exp.
                     'logger': Logger({})}  # for logging into file, pass the filepath to the Logger class.
 

@@ -12,19 +12,19 @@ class NLTK(Summariser):
     def __init__(self, params):
         super().__init__(params)
 
-    def summarise(self, doc):
-        if self.number_of_sentences(doc) > 5:
-            doc_text = re.sub(r'\[[0-9]*\]', ' ', doc)
-            doc_text = re.sub(r'\s+', ' ', doc_text)
+    def summarise(self, paragraph):
+        if len(paragraph) > 1000:
+            para_text = re.sub(r'\[[0-9]*\]', ' ', paragraph)
+            para_text = re.sub(r'\s+', ' ', para_text)
 
-            formatted_doc_text = re.sub('[^a-zA-Z]', ' ', doc_text)
-            formatted_doc_text = re.sub(r'\s+', ' ', formatted_doc_text)
+            formatted_para_text = re.sub('[^a-zA-Z]', ' ', para_text)
+            formatted_para_text = re.sub(r'\s+', ' ', formatted_para_text)
 
-            sentence_list = nltk.sent_tokenize(doc_text)
+            sentence_list = nltk.sent_tokenize(para_text)
             stopwords = nltk.corpus.stopwords.words('english')
 
             word_frequencies = {}
-            for word in nltk.word_tokenize(formatted_doc_text):
+            for word in nltk.word_tokenize(formatted_para_text):
                 if word not in stopwords:
                     if word not in word_frequencies.keys():
                         word_frequencies[word] = 1
@@ -49,7 +49,4 @@ class NLTK(Summariser):
             summary_sentences = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
             summary = ' '.join(summary_sentences)
             return [Document(None, None, summary, 0)]
-        return [Document(None, None, doc, 0)]
-
-    def number_of_sentences(self, paragraph):
-        return len(nltk.sent_tokenize(paragraph))
+        return [Document(None, None, paragraph, 0)]

@@ -5,4 +5,7 @@ SpeechRecognition
 pydub
 python-telegram-bot==12.0.0
 stanfordcorenlp
-google-cloud-texttospeech
+google-cloud-texttospeech==1.0.1
+whoosh
+gensim==3.8.3
+nltk
